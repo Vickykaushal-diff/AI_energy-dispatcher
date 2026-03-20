@@ -1,9 +1,17 @@
+# Node
 frontend/node_modules/
 frontend/build/
+
+# Python
 backend/__pycache__/
 *.pyc
-model/*.keras
-model/*.pkl
 .env
+venv/
+
+# Do NOT ignore backend/model — needed for Hugging Face
+# model/*.keras   ← remove this line
+# model/*.pkl     ← remove this line
+
+# System
 .DS_Store
 Thumbs.db
