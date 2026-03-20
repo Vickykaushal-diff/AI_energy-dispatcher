@@ -17,11 +17,17 @@ app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # ─── MODEL EK BAAR LOAD ────────────────────────────────────
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 print("Model load ho raha hai...")
-model    = tf.keras.models.load_model(os.path.join(BASE_DIR, "model", "weather_multistep_model.keras"))
-scaler_X = joblib.load(os.path.join(BASE_DIR, "model", "scaler_X.pkl"))
-scaler_y = joblib.load(os.path.join(BASE_DIR, "model", "scaler_y.pkl"))
+model    = tf.keras.models.load_model(
+    os.path.join(BASE_DIR, "model", "weather_multistep_model.keras"),
+    compile=False        # ← bas yeh add karo — Keras version mismatch fix
+)
+scaler_X = joblib.load(
+    os.path.join(BASE_DIR, "model", "scaler_X.pkl"))
+scaler_y = joblib.load(
+    os.path.join(BASE_DIR, "model", "scaler_y.pkl"))
 print("Model ready!")
 
 FEATURES     = ["temperature","humidity","wind_speed",
@@ -207,7 +213,9 @@ def predict(req: PredictRequest):
         "sensor_correction": round(sensor_correction, 2),
         "sensor_issues":     sensor_status
     }
-
+@app.get("/")
+def root():
+    return {"status": "AI Dispatcher running", "model": "ready"}
 
 # ─── RUN SERVER ─────────────────────────────────────────
 if __name__ == "__main__":

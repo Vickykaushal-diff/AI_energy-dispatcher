@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
-const API_URL      = "http://localhost:8000";
+const API_URL = "https://kaushalsharmacs-in-energy-dispatcher-api.hf.space";
 const SOLAR_SHARE  = 0.55;
 const WIND_SHARE   = 0.45;
 const Z_THRESH     = 3.0;
@@ -323,7 +323,7 @@ export default function AIDashboard() {
     const t = setInterval(() => setTick(x => x+1), 1000);
     return () => clearInterval(t);
   }, []);
-  const now = new Date();
+  const now = useMemo(() => new Date(), []);
 
   // ── FETCH LIVE WEATHER ────────────────────────────────────────────────────
   const fetchWeather = useCallback(async () => {
@@ -389,7 +389,7 @@ export default function AIDashboard() {
     } finally {
       setRunning(false);
     }
-  }, [capacity, gridMax, weather, beta, greenRequired, last24h]);
+  }, [weather, beta, greenRequired, last24h]);
 
   // ── GENERATE PDF ──────────────────────────────────────────────────────────
   const handlePDF = useCallback(async () => {

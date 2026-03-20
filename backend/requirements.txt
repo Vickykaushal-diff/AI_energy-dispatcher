@@ -1,8 +1,8 @@
 fastapi
 uvicorn
-tensorflow
+tensorflow==2.15.0
 joblib
 numpy
-scikit-learn
+scikit-learn==1.6.1
 requests
 pydantic
